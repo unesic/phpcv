@@ -1,8 +1,11 @@
-$("#alert").addClass("active").delay(1000).animate({
-    opacity: 1,
-    transform: translate(-50%, 0)
-});
+$(function() {
+    let alert = document.getElementById('alert');
 
-$("#alert.active").fadeIn("slow", function() {
-    // $(this).delay(2000).fadeOut("slow");
+    if (alert) {
+        alert.classList.add('active');
+
+        setTimeout(() => {
+            alert.classList.remove('active');
+        }, 3500);
+    }
 });
