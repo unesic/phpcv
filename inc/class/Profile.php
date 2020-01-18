@@ -74,4 +74,57 @@ class Profile
 		
 		redirect('/', 1, 'CV Created successfully!');
 	}
+	
+	public function get($id)
+	{
+		$query = 'SELECT * FROM profiles WHERE profile_id=?';
+		$result = $this->db->prepare($query);
+		$result->execute([
+			(int)$id,
+		]);
+		
+		$result = $result->fetchAll();
+		
+		return $result[0];
+	}
+	
+	public function update($data)
+	{
+		$query = 'UPDATE profiles SET
+                        name=?,
+                        title=?,
+                        date_of_birth=?,
+                        phone_number=?,
+                        email=?,
+                        address=?,
+                        social_networks=?,
+                        date_updated=?
+                        WHERE profile_id=?';
+		
+		$update = $this->db->prepare($query);
+		$update->execute([
+			$data['name'],
+			$data['title'],
+			$data['date_of_birth'],
+			$data['phone_number'],
+			$data['email'],
+			$data['address'],
+			$data['social_networks'],
+			date(DATE_FORMAT),
+			(int)$data['pid'],
+		]);
+		
+		redirect('/p/', 1, 'Profile updated!');
+	}
+	
+	public function delete($id)
+	{
+		$query = 'DELETE FROM profiles WHERE profile_id=?';
+		$conn = $this->db->prepare($query);
+		$conn->execute([
+			(int)$id,
+		]);
+		
+		redirect('/p/', 1, 'Profile deleted!');
+	}
 }

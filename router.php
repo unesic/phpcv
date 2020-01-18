@@ -2,6 +2,10 @@
 
 $request = $_SERVER['REQUEST_URI'];
 
+if (strpos($request, '?')) {
+	$request = substr($request, 0, strpos($request, '?'));
+}
+
 switch ($request) {
 	case '' :
 		redirect('/');
@@ -16,6 +20,10 @@ switch ($request) {
 	case '/u/login' :
 	case '/u/login/' :
 		include_once 'views/user/login.php';
+		break;
+	case '/p':
+	case '/p/':
+		include_once 'views/profile/view.php';
 		break;
 	case '/p/create' :
 	case '/p/create/' :
