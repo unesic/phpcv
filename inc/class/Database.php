@@ -7,9 +7,13 @@ class Database
 	public static function create()
 	{
 		try {
-			self::$instance = new PDO(DB_DSN, DB_USER, DB_PASSWORD);
-			self::$instance->exec('set names utf8mb4_unicode_520_ci');
-			self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			// Create database if it doesn't exist
+			$sql = file_get_contents("dbcreate.sql");
+			$conn = new PDO("mysql:host=" . DB_HOST, DB_USER, DB_PASSWORD, DB_OPTIONS);
+			$conn->exec($sql);
+			$conn = NULL;
+			
+			self::$instance = new PDO(DB_DSN, DB_USER, DB_PASSWORD, DB_OPTIONS);
 		} catch (PDOException $e) {
 			print 'Error!: ' . $e->getMessage() . '<br/>';
 			die();
