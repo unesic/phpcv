@@ -23,7 +23,7 @@
                         <td><?php echo $profile['address']          ?></td>
                         
                         <td>
-                            <a href="<?php echo '/p/?pid=' . $profile['profile_id']; ?>">
+                            <a href="<?php echo '/p/?pid=' . $profile['profile_id'] . '&view=1'; ?>">
                                 <i class="fa fa-eye"></i>
                             </a>
                             <a href="<?php echo '/p/?pid=' . $profile['profile_id'] . '&edit=1'; ?>">

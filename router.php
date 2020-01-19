@@ -21,13 +21,17 @@ switch ($request) {
 	case '/u/login/' :
 		include_once 'views/user/login.php';
 		break;
-	case '/p':
-	case '/p/':
+	case '/p' :
+	case '/p/' :
 		include_once 'views/profile/view.php';
 		break;
 	case '/p/create' :
 	case '/p/create/' :
 		include_once 'views/profile/create.php';
+		break;
+	case '/logout' :
+	case '/logout/' :
+		$user->logout();
 		break;
 /**
  * FIXME: Default case always executes?

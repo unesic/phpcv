@@ -49,16 +49,16 @@ class User
 	
 	public function login($data = null)
 	{
-		$login_query = 'SELECT username, password FROM users WHERE username=? AND password=? LIMIT 1';
-		$login = $this->db->prepare($login_query);
+		$query = 'SELECT username, password FROM users WHERE username=? AND password=? LIMIT 1';
+		$login = $this->db->prepare($query);
 		$login->execute([
 			$data['username'],
 			$data['password'],
 		]);
 		
-		$login_result = $login->fetchAll();
+		$result = $login->fetchAll();
 		
-		if (!empty($login_result)) {
+		if (!empty($result)) {
 			$_SESSION['logged_in'] = true;
 			$_SESSION['username'] = $data['username'];
 			$_SESSION['user_id'] = $this->getUserID($data['username']);
@@ -95,5 +95,13 @@ class User
 		]);
 		
 		return $get->fetchAll();
+	}
+	
+	public function logout()
+	{
+		$_SESSION = array();
+		$_SESSION['logged_in'] = false;
+		
+		redirect('/', 1, 'You\'re logged out!');
 	}
 }

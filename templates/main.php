@@ -4,6 +4,8 @@
 
             <?php
             
+            include_once 'templates/user-options.php';
+            
             if (!isset($_COOKIE['CURRENT_PROFILE'])) {
 	            include_once 'templates/profile-select.php';
             } else {
