@@ -13,7 +13,7 @@
                         
                         foreach ($profiles as $profile) {
                             echo '<option value="' .
-                                $profile['profile_id'] . '">' .
+                                $profile['id'] . '">' .
                                 $profile['name'] .
                                 '</option>';
                         }

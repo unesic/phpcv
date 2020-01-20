@@ -13,17 +13,17 @@
             
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-item px-0">
-                    <a href="/p/create/" class="nav-link"><i class="fa fa-plus"></i> New profile</a>
+                    <a href="<?php echo PATH; ?>/p/create/" class="nav-link"><i class="fa fa-plus"></i> New profile</a>
                 </div>
                 
                 <div class="dropdown-item px-0">
-                    <a href="/p/" class="nav-link"><i class="fa fa-eye"></i> View profiles</a>
+                    <a href="<?php echo PATH; ?>/p/" class="nav-link"><i class="fa fa-eye"></i> View profiles</a>
                 </div>
                 
                 <div class="dropdown-divider"></div>
                 
                 <div class="dropdown-item px-0">
-                    <a href="/logout/" class="nav-link"><i class="fa fa-sign-out"></i> Sign out</a>
+                    <a href="<?php echo PATH; ?>/logout/" class="nav-link"><i class="fa fa-sign-out"></i> Sign out</a>
                 </div>
                 
             </div>

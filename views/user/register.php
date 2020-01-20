@@ -1,6 +1,6 @@
 <?php
 
-if ($_SESSION['logged_in'] === true) {
+if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
 	redirect('/', 1, 'You are logged in!');
 }
 

@@ -25,7 +25,7 @@
             
         </form>
 
-        <p>Already have an account? <a href="/u/login">Login</a></p>
+        <p>Already have an account? <a href="<?php echo PATH; ?>/u/login">Login</a></p>
         
     </div>
     

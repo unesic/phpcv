@@ -6,6 +6,9 @@ if (strpos($request, '?')) {
 	$request = substr($request, 0, strpos($request, '?'));
 }
 
+$request = str_replace('/phpcv', '', $request);
+
+
 switch ($request) {
 	case '' :
 		redirect('/');

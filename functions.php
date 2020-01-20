@@ -12,6 +12,7 @@ function redirect($uri, $status = NULL, $message = NULL) {
 			setcookie('message', $message, time() + 1, '/');
 	}
 	
+	if (LOCAL) $uri = '/phpcv' . $uri;
 	
 	header('Location: ' . $uri);
 	exit();
@@ -28,7 +29,7 @@ function authenticate() {
 
 // Class autoloader
 function class_autoload($class) {
-	$path = __DIR__ . '/inc/class/';
+	$path = ABSPATH . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR;
 
 	if (file_exists($path . $class . '.php')) {
 		include_once($path . $class . '.php');

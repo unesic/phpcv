@@ -2,18 +2,6 @@
 /*
  * @var $profile
  */
-
-$name = explode(' ', $profile['name']);
-$profile['first_name'] = $name[0];
-$profile['last_name'] = $name[1];
-
-$country = explode(',', $profile['address']);
-$profile['country'] = $country[0];
-
-$address = explode(' ', $country[1]);
-$profile['zip'] = $address[0];
-$profile['city'] = $address[1];
-
 $social_networks = explode(',', $profile['social_networks']);
 $profile['linked_in'] = $social_networks[0];
 $profile['github'] = $social_networks[1];
@@ -26,17 +14,12 @@ $profile['github'] = $social_networks[1];
 		
 		<form method="POST" class="form-row">
 			
-			<div class="form-group col-md-4">
-				<label for="first_name">First Name</label>
-				<input type="text" name="first_name" id="first_name" class="form-control" value="<?php echo $profile['first_name'] ?>" required>
+			<div class="form-group col-md-12">
+				<label for="name">Name</label>
+				<input type="text" name="name" id="name" class="form-control" value="<?php echo $profile['name'] ?>" required>
 			</div>
 			
-			<div class="form-group col-md-4">
-				<label for="last_name">Last Name</label>
-				<input type="text" name="last_name" id="last_name" class="form-control" value="<?php echo $profile['last_name'] ?>" required>
-			</div>
-			
-			<div class="form-group col-md-4">
+			<div class="form-group col-md-12">
 				<label for="title">Title</label>
 				<input type="text" name="title" id="title" class="form-control" value="<?php echo $profile['title']; ?>" required>
 			</div>
@@ -56,19 +39,14 @@ $profile['github'] = $social_networks[1];
 				<input type="text" name="email" id="email" class="form-control" value="<?php echo $profile['email']; ?>" required>
 			</div>
 			
-			<div class="form-group col-md-4">
+			<div class="form-group col-md-6">
 				<label for="country">Country</label>
 				<input type="text" name="country" id="country" class="form-control" value="<?php echo $profile['country']; ?>" required>
 			</div>
 			
-			<div class="form-group col-md-4">
+			<div class="form-group col-md-6">
 				<label for="city">City</label>
 				<input type="text" name="city" id="city" class="form-control" value="<?php echo $profile['city']; ?>" required>
-			</div>
-			
-			<div class="form-group col-md-4">
-				<label for="zip">ZIP</label>
-				<input type="text" name="zip" id="zip" class="form-control" value="<?php echo $profile['zip']; ?>" required>
 			</div>
 			
 			<div class="form-group col-md-6">

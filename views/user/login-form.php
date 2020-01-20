@@ -20,7 +20,7 @@
 		
 		</form>
         
-        <p>Don't have an account? <a href="/u/register">Register</a></p>
+        <p>Don't have an account? <a href="<?php echo PATH; ?>/u/register">Register</a></p>
 	
 	</div>
 

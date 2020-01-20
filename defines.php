@@ -10,6 +10,11 @@ define('DB_OPTIONS', [
 	PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 ]);
 
+define('ABSPATH', dirname(__DIR__) . DIRECTORY_SEPARATOR . 'phpcv' . DIRECTORY_SEPARATOR);
+define('LOCAL', true);
+
+LOCAL ? define('PATH', '/phpcv') : define('PATH', '');
+
 $PAGE_TITLE = 'PHP CV';
 
 date_default_timezone_set('Europe/Belgrade');

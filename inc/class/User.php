@@ -71,14 +71,14 @@ class User
 	
 	public function getUserID($username)
 	{
-		$query = 'SELECT user_id FROM users WHERE username=? LIMIT 1';
+		$query = 'SELECT id FROM users WHERE username=? LIMIT 1';
 		$result = $this->db->prepare($query);
 		$result->execute([
 			$username,
 		]);
 		$result = $result->fetchAll();
 		
-		return $result[0]['user_id'];
+		return $result[0]['id'];
 	}
 	
 	public function getDb()

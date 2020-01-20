@@ -6,14 +6,15 @@ $profile = new Profile($db);
 
 // Profile update
 if (isset($_POST['submit'])) {
-	$data['name']               = $_POST['first_name'] . ' ' . $_POST['last_name'];
+	$data['name']               = $_POST['name'];
 	$data['title']              = $_POST['title'];
 	$data['date_of_birth']      = $_POST['date_of_birth'];
 	$data['phone_number']       = $_POST['phone_number'];
 	$data['email']              = $_POST['email'];
-	$data['address']            = $_POST['country'] . ',' . $_POST['zip'] . ' ' . $_POST['city'];
+	$data['country']            = $_POST['country'];
+	$data['city']               = $_POST['city'];
 	$data['social_networks']    = $_POST['linked_in'] . ',' . $_POST['github'];
-	$data['pid'] = $_GET['pid'];
+	$data['pid']                = $_GET['pid'];
 	
 	$profile->update($data);
 }

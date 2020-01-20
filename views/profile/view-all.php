@@ -7,7 +7,8 @@
                     <th>Title</th>
                     <th>Phone</th>
                     <th>E-mail</th>
-                    <th>Address</th>
+                    <th>Country</th>
+                    <th>City</th>
                     <th></th>
                 </tr>
             </thead>
@@ -20,16 +21,17 @@
                         <td><?php echo $profile['title']            ?></td>
                         <td><?php echo $profile['phone_number']     ?></td>
                         <td><?php echo $profile['email']            ?></td>
-                        <td><?php echo $profile['address']          ?></td>
+                        <td><?php echo $profile['country']          ?></td>
+                        <td><?php echo $profile['city']             ?></td>
                         
                         <td>
-                            <a href="<?php echo '/p/?pid=' . $profile['profile_id'] . '&view=1'; ?>">
+                            <a href="<?php echo PATH . '/p/?pid=' . $profile['id'] . '&view=1'; ?>">
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <a href="<?php echo '/p/?pid=' . $profile['profile_id'] . '&edit=1'; ?>">
+                            <a href="<?php echo PATH . '/p/?pid=' . $profile['id'] . '&edit=1'; ?>">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a href="<?php echo '/p/?pid=' . $profile['profile_id'] . '&remove=1'; ?>">
+                            <a href="<?php echo PATH . '/p/?pid=' . $profile['id'] . '&remove=1'; ?>">
                                 <i class="fa fa-remove"></i>
                             </a>
                         </td>

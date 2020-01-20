@@ -23,11 +23,10 @@ class Profile
                         date_of_birth,
                         phone_number,
                         email,
-                        address,
-                        social_networks,
-                        date_created,
-                        date_updated)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                        country,
+                      	city,
+                        social_networks)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		
 		$create = $this->db->prepare($query);
 		$create->execute([
@@ -37,10 +36,9 @@ class Profile
 			$data['date_of_birth'],
 			$data['phone_number'],
 			$data['email'],
-			$data['address'],
+			$data['country'],
+			$data['city'],
 			$data['social_networks'],
-			date(DATE_FORMAT),
-			date(DATE_FORMAT),
 		]);
 		
 		redirect('/', 1, 'Profile created!');
@@ -52,32 +50,32 @@ class Profile
 		$query = 'INSERT INTO cvs (profile_id) VALUES (?)';
 		$create = $this->db->prepare($query);
 		$create->execute([
-			$profile_id,
+			(int)$profile_id,
 			]);
-		
+
 		// Updates current profile property
 		$query = 'UPDATE profiles
-						SET has_cvs = IF(has_cvs = 0, 1, 1)
-						WHERE profile_id=?';
+						SET has_cvs = IF(has_cvs = NULL, 1, 1)
+						WHERE id=?';
 		$update = $this->db->prepare($query);
 		$update->execute([
-			$profile_id,
+			(int)$profile_id,
 		]);
-		
+
 		$query = 'SELECT id FROM cvs WHERE profile_id=? ORDER BY id DESC LIMIT 1';
 		$result = $this->db->prepare($query);
 		$result->execute([
-			$profile_id,
+			(int)$profile_id,
 		]);
-		
+
 		setcookie('CURRENT_CV', $result->fetchAll()[0]['id']);
-		
+
 		redirect('/', 1, 'CV Created successfully!');
 	}
 	
 	public function get($id)
 	{
-		$query = 'SELECT * FROM profiles WHERE profile_id=?';
+		$query = 'SELECT * FROM profiles WHERE id=?';
 		$result = $this->db->prepare($query);
 		$result->execute([
 			(int)$id,
@@ -96,10 +94,11 @@ class Profile
                         date_of_birth=?,
                         phone_number=?,
                         email=?,
-                        address=?,
+                        country=?,
+                        city=?,
                         social_networks=?,
                         date_updated=?
-                        WHERE profile_id=?';
+                        WHERE id=?';
 		
 		$update = $this->db->prepare($query);
 		$update->execute([
@@ -108,7 +107,8 @@ class Profile
 			$data['date_of_birth'],
 			$data['phone_number'],
 			$data['email'],
-			$data['address'],
+			$data['country'],
+			$data['city'],
 			$data['social_networks'],
 			date(DATE_FORMAT),
 			(int)$data['pid'],
@@ -119,7 +119,13 @@ class Profile
 	
 	public function delete($id)
 	{
-		$query = 'DELETE FROM profiles WHERE profile_id=?';
+		$query = 'DELETE FROM profiles WHERE id=?';
+		$conn = $this->db->prepare($query);
+		$conn->execute([
+			(int)$id,
+		]);
+		
+		$query = 'DELETE FROM cvs WHERE profile_id=?';
 		$conn = $this->db->prepare($query);
 		$conn->execute([
 			(int)$id,
