@@ -7,8 +7,8 @@ CREATE TABLE `users` (
     `username`      VARCHAR(50),
     `password`      VARCHAR(50),
     `email`         VARCHAR(50),
-    `date_created`  TIMESTAMP,
-    `date_updated`  TIMESTAMP,
+    `date_created`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    `date_updated`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -23,8 +23,8 @@ CREATE TABLE `profiles` (
     `address`         VARCHAR(100),
     `social_networks` VARCHAR(255),
     `has_cvs`         TINYINT UNSIGNED,
-    `date_created`    TIMESTAMP,
-    `date_updated`    TIMESTAMP,
+    `date_created`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    `date_updated`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -33,15 +33,15 @@ CREATE TABLE `components` (
     `type`            VARCHAR(50),
     `content`         VARCHAR(65535),
     `cv_id`           MEDIUMINT UNSIGNED NOT NULL,
-    `date_created`    TIMESTAMP,
-    `date_updated`    TIMESTAMP,
+    `date_created`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    `date_updated`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE `cvs` (
     `id`              MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
     `profile_id`      MEDIUMINT UNSIGNED NOT NULL,
-    `date_created`    TIMESTAMP,
-    `date_updated`    TIMESTAMP,
+    `date_created`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    `date_updated`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY (id)
 );
