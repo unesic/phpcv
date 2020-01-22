@@ -51,3 +51,21 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.nav .sub-nav {
+    padding-left: 10px;
+}
+
+.nav-head {
+    font-size: 1.2em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.nav-text i {
+    padding-right: 5px;
+}
+
+.nav-link:hover > .nav-text.text-white {
+    opacity: 0.5;
+}

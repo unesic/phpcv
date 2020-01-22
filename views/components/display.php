@@ -2,6 +2,7 @@
 
 $components = (new Component($db))->getComponents();
 $i = 0;
+$components_all = array();
 
 foreach ($components as $component) {
 	$components_all[$i] = new Component($db);
@@ -11,10 +12,9 @@ foreach ($components as $component) {
 	$components_all[$i]->setContent($component['content']);
 	$components_all[$i]->setCvId($component['id']);
 	
-//	print_r($components_all[$i]);
-	
 	$components_all[$i++]->display();
-//	Component::display($component);
 }
+
+//print("<pre>".print_r($components_all,true)."</pre>");
 
 include_once 'views/components/create.php';

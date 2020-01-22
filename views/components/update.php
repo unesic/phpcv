@@ -14,5 +14,9 @@ if (isset($_POST['update'])) {
     // FIXME: Edit buttons all refer to the first component
     // TODO: Instead of working with in chaos, create controllers
 } else {
-	include_once 'views/components/update-modal.php';
+	echo '<br>';
+    echo $this->id . '<br>';
+	echo $this->content . '<br>';
+	echo '<br>';
+//	include_once 'views/components/update-modal.php';
 }
