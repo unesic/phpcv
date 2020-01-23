@@ -6,4 +6,3 @@ include_once 'functions.php';
 spl_autoload_register('class_autoload');
 
 $db = Database::create();
-$user = new User($db);

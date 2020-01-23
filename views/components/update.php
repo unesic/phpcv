@@ -12,7 +12,6 @@ if (isset($_POST['update'])) {
     $this->update();
     
     // FIXME: Edit buttons all refer to the first component
-    // TODO: Instead of working with in chaos, create controllers
 } else {
 	echo '<br>';
     echo $this->id . '<br>';

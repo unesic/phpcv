@@ -9,7 +9,7 @@
                         
                         <?php
                         
-                        $profiles = $user->getProfiles();
+                        $profiles = Profile::getProfiles($db);
                         
                         foreach ($profiles as $profile) {
                             echo '<option value="' .

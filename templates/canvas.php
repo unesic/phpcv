@@ -4,9 +4,7 @@
             <?php
 
             /**
-             * TODO: Let user choose profile and return profile_id
-             * TODO: Find a way to update content on spot
-             * TODO: Add animation for alert element
+             * TODO: Update content on spot
              */
 
             include_once 'views/components/display.php';

@@ -3,18 +3,7 @@
 
 class Profile
 {
-	/**
-	 * @var PDO
-	 */
-	
-	private $db;
-	
-	public function __construct($db)
-	{
-		$this->db = $db;
-	}
-	
-	public function create($data)
+	public static function create(PDO $db, $data)
 	{
 		$query = 'INSERT INTO profiles (
                         user_id,
@@ -28,7 +17,7 @@ class Profile
                         social_networks)
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
 		
-		$create = $this->db->prepare($query);
+		$create = $db->prepare($query);
 		$create->execute([
 			$data['user_id'],
 			$data['name'],
@@ -44,49 +33,7 @@ class Profile
 		redirect('/', 1, 'Profile created!');
 	}
 	
-	public function create_cv($profile_id)
-	{
-		// Creates new entry in CVS table
-		$query = 'INSERT INTO cvs (profile_id) VALUES (?)';
-		$create = $this->db->prepare($query);
-		$create->execute([
-			(int)$profile_id,
-			]);
-
-		// Updates current profile property
-		$query = 'UPDATE profiles
-						SET has_cvs = IF(has_cvs = NULL, 1, 1)
-						WHERE id=?';
-		$update = $this->db->prepare($query);
-		$update->execute([
-			(int)$profile_id,
-		]);
-
-		$query = 'SELECT id FROM cvs WHERE profile_id=? ORDER BY id DESC LIMIT 1';
-		$result = $this->db->prepare($query);
-		$result->execute([
-			(int)$profile_id,
-		]);
-
-		setcookie('CURRENT_CV', $result->fetchAll()[0]['id']);
-
-		redirect('/', 1, 'CV Created successfully!');
-	}
-	
-	public function get($id)
-	{
-		$query = 'SELECT * FROM profiles WHERE id=?';
-		$result = $this->db->prepare($query);
-		$result->execute([
-			(int)$id,
-		]);
-		
-		$result = $result->fetchAll();
-		
-		return $result[0];
-	}
-	
-	public function update($data)
+	public static function update(PDO $db, $data)
 	{
 		$query = 'UPDATE profiles SET
                         name=?,
@@ -100,7 +47,7 @@ class Profile
                         date_updated=?
                         WHERE id=?';
 		
-		$update = $this->db->prepare($query);
+		$update = $db->prepare($query);
 		$update->execute([
 			$data['name'],
 			$data['title'],
@@ -117,20 +64,66 @@ class Profile
 		redirect('/p/', 1, 'Profile updated!');
 	}
 	
-	public function delete($id)
+	public static function get(PDO $db, $id)
+	{
+		$query = 'SELECT * FROM profiles WHERE id=?';
+		$result = $db->prepare($query);
+		$result->execute([
+			(int)$id,
+		]);
+		
+		$result = $result->fetchAll();
+		
+		return $result[0];
+	}
+	
+	public static function getProfiles(PDO $db)
+	{
+		$query = 'SELECT * FROM profiles WHERE user_id=?';
+		$get = $db->prepare($query);
+		$get->execute([
+			$_SESSION['user_id'],
+		]);
+		
+		return $get->fetchAll();
+	}
+	
+	public static function delete(PDO $db, $id)
 	{
 		$query = 'DELETE FROM profiles WHERE id=?';
-		$conn = $this->db->prepare($query);
+		$conn = $db->prepare($query);
 		$conn->execute([
 			(int)$id,
 		]);
 		
 		$query = 'DELETE FROM cvs WHERE profile_id=?';
-		$conn = $this->db->prepare($query);
+		$conn = $db->prepare($query);
 		$conn->execute([
 			(int)$id,
 		]);
 		
 		redirect('/p/', 1, 'Profile deleted!');
+	}
+	
+	public static function getUserId(PDO $db, $id)
+	{
+		$query = 'SELECT user_id FROM profiles WHERE id=? LIMIT 1';
+		$conn = $db->prepare($query);
+		$conn->execute([
+			(int)$id,
+		]);
+		
+		return $conn->fetchAll()[0]['user_id'];
+	}
+	
+	public static function hasCV(PDO $db, $id)
+	{
+		$query = 'SELECT has_cvs FROM profiles WHERE id=? LIMIT 1';
+		$conn = $db->prepare($query);
+		$conn->execute([
+			(int)$id,
+		]);
+		
+		return $conn->fetchAll()[0]['has_cvs'];
 	}
 }

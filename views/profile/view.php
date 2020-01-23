@@ -2,8 +2,6 @@
 
 authenticate();
 
-$profile = new Profile($db);
-
 // Profile update
 if (isset($_POST['submit'])) {
 	$data['name']               = $_POST['name'];
@@ -16,28 +14,34 @@ if (isset($_POST['submit'])) {
 	$data['social_networks']    = $_POST['linked_in'] . ',' . $_POST['github'];
 	$data['pid']                = $_GET['pid'];
 	
-	$profile->update($data);
+	Profile::update($db, $data);
 }
 
 
 // View all profiles (view, edit, remove)
+
 if (isset($_GET['view'])) {
 	
-	$profile = $profile->get($_GET['pid']);
+	checkRelation($db, 'user-profile');
+	$profile = Profile::get($db, $_GET['pid']);
+	
 	include_once 'views/profile/view-single.php';
 	
 } else if (isset($_GET['edit'])) {
 	
-	$profile = $profile->get($_GET['pid']);
+	checkRelation($db, 'user-profile');
+	$profile = Profile::get($db, $_GET['pid']);
+	
 	include_once 'views/profile/edit.php';
 	
 } else if (isset($_GET['remove'])) {
 	
-	$profile->delete($_GET['pid']);
+	checkRelation($db, 'user-profile');
+	Profile::delete($db, $_GET['pid']);
 	
 } else {
 	
-	$profiles = $user->getProfiles();
+	$profiles = Profile::getProfiles($db);
 	include_once 'views/profile/view-all.php';
 	
 }

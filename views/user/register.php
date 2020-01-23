@@ -11,7 +11,7 @@ if (isset($_POST['submit'])) {
 	$data['password'] = $_POST['password'];
 	$data['email'] = $_POST['email'];
 	
-	$user->create($data);
+	User::create($db, $data);
 } else {
 	include_once 'views/user/register-form.php';
 }

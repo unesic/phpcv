@@ -5,8 +5,7 @@ authenticate();
 $PAGE_TITLE = 'New profile';
 
 if (isset($_POST['submit'])) {
-	$user = new User($db);
-	$data['user_id'] = $user->getUserID($_SESSION['username']);
+	$data['user_id'] = User::getID($db, $_SESSION['username']);
 	unset($user);
 	
 	$data['name']               = $_POST['name'];
@@ -18,8 +17,7 @@ if (isset($_POST['submit'])) {
 	$data['city']               = $_POST['city'];
 	$data['social_networks']    = $_POST['linked_in'] . ',' . $_POST['github'];
 	
-	$profile = new Profile($db);
-	$profile->create($data);
+	Profile::create($db, $data);
 } else {
 	include_once 'views/profile/create-form.php';
 }

@@ -3,24 +3,13 @@
 
 class User
 {
-	/**
-	 * @var PDO
-	 */
-	
-	private $db;
-	
-	public function __construct($db)
-	{
-		$this->db = $db;
-	}
-	
-	public function create($data)
+	public static function create(PDO $db, $data)
 	{
 		/**
 		 * Checks whether entered username and/or email are already in use
 		 */
 		$check_query = 'SELECT * FROM users WHERE username=? OR email=? LIMIT 1';
-		$check_result = $this->db->prepare($check_query);
+		$check_result = $db->prepare($check_query);
 		$check_result->execute([
 			$data['username'],
 			$data['email'],
@@ -33,24 +22,24 @@ class User
 		 */
 		if (empty($check_result)) {
 			$insert_query = 'INSERT INTO `users` (`username`, `password`, `email`) VALUES (?, ?, ?)';
-			$create = $this->db->prepare($insert_query);
+			$create = $db->prepare($insert_query);
 			$create->execute([
 				$data['username'],
 				$data['password'],
 				$data['email'],
 			]);
 			
-			$this->login($data);
+			self::login($db, $data);
 		} else {
 			redirect('/u/register', 0, 'User with entered e-mail/username already exists!');
 		}
 		
 	}
 	
-	public function login($data = null)
+	public static function login(PDO $db, $data = null)
 	{
 		$query = 'SELECT username, password FROM users WHERE username=? AND password=? LIMIT 1';
-		$login = $this->db->prepare($query);
+		$login = $db->prepare($query);
 		$login->execute([
 			$data['username'],
 			$data['password'],
@@ -61,7 +50,7 @@ class User
 		if (!empty($result)) {
 			$_SESSION['logged_in'] = true;
 			$_SESSION['username'] = $data['username'];
-			$_SESSION['user_id'] = $this->getUserID($data['username']);
+			$_SESSION['user_id'] = self::getID($db, $data['username']);
 			
 			redirect('/', 1, 'You have successfully logged in!');
 		} else {
@@ -69,10 +58,18 @@ class User
 		}
 	}
 	
-	public function getUserID($username)
+	public static function logout()
+	{
+		$_SESSION = array();
+		$_SESSION['logged_in'] = false;
+		
+		redirect('/', 1, 'You\'re logged out!');
+	}
+	
+	public static function getID(PDO $db, $username)
 	{
 		$query = 'SELECT id FROM users WHERE username=? LIMIT 1';
-		$result = $this->db->prepare($query);
+		$result = $db->prepare($query);
 		$result->execute([
 			$username,
 		]);
@@ -81,27 +78,14 @@ class User
 		return $result[0]['id'];
 	}
 	
-	public function getDb()
+	public static function hasProfile(PDO $db)
 	{
-		return $this->db;
-	}
-	
-	public function getProfiles()
-	{
-		$query = 'SELECT * FROM profiles WHERE user_id=?';
-		$get = $this->db->prepare($query);
-		$get->execute([
+		$query = 'SELECT id FROM profiles WHERE user_id=?';
+		$conn = $db->prepare($query);
+		$conn->execute([
 			$_SESSION['user_id'],
 		]);
 		
-		return $get->fetchAll();
-	}
-	
-	public function logout()
-	{
-		$_SESSION = array();
-		$_SESSION['logged_in'] = false;
-		
-		redirect('/', 1, 'You\'re logged out!');
+		return $conn->fetchAll();
 	}
 }

@@ -34,12 +34,9 @@ switch ($request) {
 		break;
 	case '/logout' :
 	case '/logout/' :
-		$user->logout();
+		User::logout();
 		break;
-/**
- * FIXME: Default case always executes?
- */
-//	default :
-//		include_once 'home.php';
-//		break;
+	default :
+		redirect('/');
+		break;
 }

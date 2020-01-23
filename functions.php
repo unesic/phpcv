@@ -1,6 +1,11 @@
 <?php
 
 // Redirect function with status message
+/**
+ * @param $uri
+ * @param null $status
+ * @param null $message
+ */
 function redirect($uri, $status = NULL, $message = NULL) {
 	if ($status !== NULL) {
 		$status === 1 ?
@@ -33,5 +38,27 @@ function class_autoload($class) {
 
 	if (file_exists($path . $class . '.php')) {
 		include_once($path . $class . '.php');
+	}
+}
+
+function checkRelation(PDO $db, $relation) {
+	$uid = NULL;
+	$pid = NULL;
+	
+	if ($relation === 'user-profile' || $relation === 'profile-user') {
+		$uid = User::getID($db, $_SESSION['username']);
+		$pid = Profile::getUserId($db, $_GET['pid']);
+		
+		if ($uid !== $pid) {
+			redirect('/', 0, 'You don\'t have access to requested data!');
+		}
+	} else if ($relation === 'user-cv' || $relation === 'cv-user') {
+		$uid = User::getID($db, $_SESSION['username']);
+		$pid = CV::getProfileId($db, $_COOKIE['CURRENT_CV']);
+		
+		if ($uid !== $pid) {
+			setcookie('CURRENT_CV', '', time() - 1);
+			redirect('/', 0, 'You don\'t have access to requested data!');
+		}
 	}
 }

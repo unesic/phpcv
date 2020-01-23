@@ -23,9 +23,6 @@ class Component
 		$this->db = $db;
 	}
 	
-	/**
-	 * @param $component
-	 */
 	public function display()
 	{
 		$filePath = "views/components/{$this->type}.php";
@@ -35,13 +32,10 @@ class Component
 		}
 	}
 	
-	/**
-	 * @param $data
-	 */
-	public function create($data)
+	public static function create(PDO $db, $data)
 	{
 		$query = 'INSERT INTO components (`type`, `content`, `cv_id`) VALUES (?, ?, ?)';
-		$create = $this->db->prepare($query);
+		$create = $db->prepare($query);
 		$create->execute([
 			$data['type'],
 			$data['content'],
@@ -141,5 +135,3 @@ class Component
 		$this->cv_id = $cv_id;
 	}
 }
-
-// TODO: Write a helper function for passing data to views - 'extract($data)'

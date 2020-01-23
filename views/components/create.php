@@ -15,7 +15,7 @@ if (isset($_POST['create'])) {
 	$data['cv_id'] = $_COOKIE['CURRENT_CV'];
 	
 //	print('<pre>' . print_r($data, true) . '</pre>');
-    (new Component($db))->create($data);
+    Component::create($db, $data);
 } else {
 	include_once 'views/components/create-modal.php';
 }
