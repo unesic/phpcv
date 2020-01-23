@@ -54,7 +54,8 @@ function checkRelation(PDO $db, $relation) {
 		}
 	} else if ($relation === 'user-cv' || $relation === 'cv-user') {
 		$uid = User::getID($db, $_SESSION['username']);
-		$pid = CV::getProfileId($db, $_COOKIE['CURRENT_CV']);
+		$cid = CV::getProfileId($db, $_COOKIE['CURRENT_CV']);
+		$pid = Profile::getUserId($db, $cid);
 		
 		if ($uid !== $pid) {
 			setcookie('CURRENT_CV', '', time() - 1);
