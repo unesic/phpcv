@@ -3,35 +3,6 @@
 
 class Component
 {
-	/**
-	 * @var PDO
-	 */
-	
-	private $db;
-	
-	private $id;
-	private $type;
-	private $content;
-	private $cv_id;
-	
-	/**
-	 * Component constructor.
-	 * @param $db
-	 */
-	public function __construct($db)
-	{
-		$this->db = $db;
-	}
-	
-	public function display()
-	{
-		$filePath = "views/components/{$this->type}.php";
-		
-		if (file_exists($filePath)) {
-			include $filePath;
-		}
-	}
-	
 	public static function create(PDO $db, $data)
 	{
 		$query = 'INSERT INTO components (`type`, `content`, `cv_id`) VALUES (?, ?, ?)';
@@ -45,93 +16,48 @@ class Component
 		redirect('/');
 	}
 	
-	public function update()
+	public static function get(PDO $db, $id)
 	{
-		$query = 'UPDATE components SET content=? WHERE id=?';
-		$update = $this->db->prepare($query);
-		$update->execute([
-			$this->content,
-			$this->id,
+		$query = 'SELECT id, type, content FROM components WHERE id=? LIMIT 1';
+		$get = $db->prepare($query);
+		$get->execute([
+			(int)$id,
 		]);
 		
-		redirect('/');
+		return $get->fetchAll()[0];
+	}
+	
+	public static function update(PDO $db, $data)
+	{
+		$query = 'UPDATE components SET content=? WHERE id=?';
+		$update = $db->prepare($query);
+		$update->execute([
+			$data['content'],
+			(int)$data['id'],
+		]);
+	}
+	
+	public static function display($component)
+	{
+		$path = 'views/component/components/' . $component['type'] . '.php';
+
+		if (file_exists($path)) {
+			include $path;
+		}
 	}
 	
 	/**
+	 * @param $db
 	 * @return array
 	 */
-	public function getComponents()
+	public static function getComponents(PDO $db)
 	{
 		$query = 'SELECT * FROM components WHERE cv_id=?';
-		$result = $this->db->prepare($query);
+		$result = $db->prepare($query);
 		$result->execute([
 			$_COOKIE['CURRENT_CV'],
 		]);
 		
 		return $result->fetchAll();
-	}
-	
-	/**
-	 * @return mixed
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-	
-	/**
-	 * @param mixed $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
-	
-	/**
-	 * @return mixed
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
-	
-	/**
-	 * @param mixed $type
-	 */
-	public function setType($type)
-	{
-		$this->type = $type;
-	}
-	
-	/**
-	 * @return mixed
-	 */
-	public function getContent()
-	{
-		return $this->content;
-	}
-	
-	/**
-	 * @param mixed $content
-	 */
-	public function setContent($content)
-	{
-		$this->content = $content;
-	}
-	
-	/**
-	 * @return mixed
-	 */
-	public function getCvId()
-	{
-		return $this->cv_id;
-	}
-	
-	/**
-	 * @param mixed $cv_id
-	 */
-	public function setCvId($cv_id)
-	{
-		$this->cv_id = $cv_id;
 	}
 }

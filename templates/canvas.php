@@ -7,7 +7,7 @@
              * TODO: Update content on spot
              */
 
-            include_once 'views/components/display.php';
+            include_once 'views/component/display.php';
 
             ?>
         </div>
