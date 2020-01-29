@@ -1,6 +1,5 @@
 <div id="canvas" class="shadow bg-white">
     <div class="canvas-wrapper p-4">
-        
         <div class="canvas-inner container">
             
             <?php
@@ -9,7 +8,5 @@
 
             ?>
         </div>
-        
     </div>
-    
 </div>
