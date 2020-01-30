@@ -1,5 +1,5 @@
 $('.update-btn').click(function () {
-    const $id = $(this).attr('data-component');
+    var $id = $(this).attr('data-component');
 
     $.ajax({
         type: 'POST',
@@ -8,19 +8,19 @@ $('.update-btn').click(function () {
             id: $id
         },
         success: function (data) {
-            const $component = JSON.parse(data);
+            var $component = JSON.parse(data);
 
             $('#update-modal-title').text($component['type']);
-            $('#update-text').text($component['content']);
+            $('#update-text').val($component['content']);
             $('#save-btn').attr('data-component', $component['id']);
             $('#update-modal').modal('show');
         },
     });
 
     $('#save-btn').click(function () {
-        const $id = $(this).attr('data-component');
-        const $content = $('#update-text').val();
-        const $type = $('#update-modal-title').text();
+        var $id = $(this).attr('data-component');
+        var $content = $('#update-text').val();
+        var $type = $('#update-modal-title').text();
 
         $.ajax({
             type: 'POST',
@@ -33,6 +33,9 @@ $('.update-btn').click(function () {
             success: function (data) {
                 $('.' + data + '-component_' + $id).text($content);
                 $('#update-modal').modal('hide');
+
+                $('#update-modal-title').text('');
+                $('#update-text').text('');
             },
         });
     });
