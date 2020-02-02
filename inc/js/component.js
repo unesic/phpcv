@@ -40,3 +40,24 @@ $('.update-btn').click(function () {
         });
     });
 });
+
+$('.delete-btn').click(function() {
+    var $id = $(this).attr('data-component');
+    var $component = $(this).parents('.component');
+
+    $('#delete-modal').modal('show');
+
+    $('#delete-btn').click(function () {
+        $.ajax({
+            type: 'POST',
+            url: 'views/component/delete.php',
+            data: {
+                id: $id
+            },
+            success: function () {
+                $component.remove();
+                $('#delete-modal').modal('hide');
+            }
+        });
+    });
+});

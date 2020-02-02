@@ -13,9 +13,5 @@ $data['type'] = 'paragraph';
 if (isset($_POST['create'])) {
 	$data['content'] = $_POST['text'];
 	$data['cv_id'] = $_COOKIE['CURRENT_CV'];
-	
-//	print('<pre>' . print_r($data, true) . '</pre>');
     Component::create($db, $data);
-} else {
-	include_once 'views/component/create-modal.php';
 }

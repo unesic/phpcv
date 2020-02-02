@@ -9,4 +9,4 @@ include_once 'templates/main.php';
 ?>
 
 <script src="inc/js/home.js"></script>
-<script src="inc/js/update-modal.js"></script>
+<script src="inc/js/component.js"></script>

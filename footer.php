@@ -1,8 +1,11 @@
 
 
 		</section>
-        
+		
+		<?php include_once 'views/component/create-modal.php'; ?>
         <?php include_once 'views/component/update-modal.php' ?>
+		<?php include_once 'views/component/delete-modal.php' ?>
+        
         <script src="<?php echo PATH; ?>/inc/js/alert.js"></script>
 		<script src="https://use.fontawesome.com/a04942cafa.js"></script>
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>

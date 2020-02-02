@@ -1,6 +1,6 @@
 <?php
 
-$components = Component::getComponents($db);
+$components = Component::getComponents($db, $_COOKIE['CURRENT_CV']);
 
 foreach ($components as $component) {
 	Component::display($component);
