@@ -5,7 +5,7 @@ $(function() {
 
     if (section.classList.contains("container")) {
         section.classList.remove('container');
-        section.classList += "container-fluid p-0";
+        section.classList += "d-flex container-fluid p-0";
     }
 
     sidebar.style.height = window.innerHeight + 'px';

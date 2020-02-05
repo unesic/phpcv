@@ -1,0 +1,44 @@
+.component {
+	@offset: 10px;
+
+	margin-bottom: 20px;
+	position: relative;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: @offset * -1;
+		left: @offset * -1;
+		width: calc(~'100% +' (@offset * 2));
+		height: calc(~'100% +' (@offset * 2));
+		z-index: -1;
+		border: 2px dashed #aaaaaa;
+		opacity: 0;
+		-webkit-transition: @transition;
+		-moz-transition: @transition;
+		-ms-transition: @transition;
+		-o-transition: @transition;
+		transition: @transition;
+	}
+
+	&:hover::after {
+		opacity: 1;
+	}
+
+	.btn-group {
+		opacity: 0.2;
+		filter: grayscale(1);
+		-webkit-filter: grayscale(1);
+		filter: grayscale(1);
+		-webkit-transition: @transition;
+		-moz-transition: @transition;
+		-ms-transition: @transition;
+		-o-transition: @transition;
+		transition: @transition;
+	}
+
+	&:hover .btn-group {
+		opacity: 1;
+		filter: unset;
+	}
+}
