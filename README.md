@@ -24,11 +24,9 @@ CRUD Application **CV Builder** where user can have multiple profiles and corres
 ## Config
 * Download XAMPP here [here](https://www.apachefriends.org/download.html)
 * Clone this repo inside `/xampp/htdocs/`
-* Checkout to git `local` branch
 * Start Apache and MySQL services from XAMPP Control Panel
 ```sh
 git clone https://github.com/unesic/phpcv.git
-cd phpcv/
 git checkout local
 ```
 
