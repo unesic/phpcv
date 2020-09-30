@@ -4,142 +4,137 @@
 class Component
 {
 	/**
-	 * @var PDO
+	 * @param PDO $db
+	 * @param $data
 	 */
-	
-	private $db;
-	
-	private $id;
-	private $type;
-	private $content;
-	private $cv_id;
+	public static function create(PDO $db, $data)
+	{
+		try {
+			$query = 'INSERT INTO components (`type`, `content`, `cv_id`) VALUES (?, ?, ?)';
+			$create = $db->prepare($query);
+			$create->execute([
+				$data['type'],
+				$data['content'],
+				(int)$data['cv_id'],
+			]);
+			
+			redirect('/');
+		} catch (Exception $e) {
+			echo 'Error!: ' . $e->getMessage() . '<br/>';
+		}
+	}
 	
 	/**
-	 * Component constructor.
-	 * @param $db
+	 * @param PDO $db
+	 * @param $id
+	 * @return mixed|string
 	 */
-	public function __construct($db)
+	public static function get(PDO $db, $id)
 	{
-		$this->db = $db;
+		try {
+			$query = 'SELECT id, type, content FROM components WHERE id=? LIMIT 1';
+			$get = $db->prepare($query);
+			$get->execute([
+				(int)$id,
+			]);
+			
+			return $get->fetchAll()[0];
+		} catch (Exception $e) {
+			return 'Error!: ' . $e->getMessage() . '<br/>';
+		}
+	}
+	
+	/**
+	 * @param PDO $db
+	 * @param $data
+	 */
+	public static function update(PDO $db, $data)
+	{
+		try {
+			$query = 'UPDATE components SET content=?, date_updated=? WHERE id=?';
+			$update = $db->prepare($query);
+			$update->execute([
+				$data['content'],
+				date(DATE_FORMAT),
+				(int)$data['id'],
+			]);
+		} catch (Exception $e) {
+			echo 'Error!: ' . $e->getMessage() . '<br/>';
+		}
 	}
 	
 	/**
 	 * @param $component
 	 */
-	public function display()
+	public static function display($component)
 	{
-		$filePath = "views/components/{$this->type}.php";
-		
-		if (file_exists($filePath)) {
-			include $filePath;
+		$path = 'views/component/components/' . $component['type'] . '.php';
+
+		if (file_exists($path)) {
+			include $path;
+		} else {
+			echo 'Component path not found!';
 		}
 	}
 	
 	/**
-	 * @param $data
+	 * @param PDO $db
+	 * @param $id
+	 * @return bool|string
 	 */
-	public function create($data)
+	public static function delete(PDO $db, $id)
 	{
-		$query = 'INSERT INTO components (`type`, `content`, `cv_id`) VALUES (?, ?, ?)';
-		$create = $this->db->prepare($query);
-		$create->execute([
-			$data['type'],
-			$data['content'],
-			(int)$data['cv_id'],
-		]);
-		
-		redirect('/');
-	}
-	
-	public function update()
-	{
-		$query = 'UPDATE components SET content=? WHERE id=?';
-		$update = $this->db->prepare($query);
-		$update->execute([
-			$this->content,
-			$this->id,
-		]);
-		
-		redirect('/');
+		try {
+			$query = 'DELETE FROM components WHERE id=?';
+			$conn = $db->prepare($query);
+			$conn->execute([
+				(int)$id,
+			]);
+			
+			return true;
+		} catch (Exception $e) {
+			return 'Error!: ' . $e->getMessage() . '<br/>';
+		}
 	}
 	
 	/**
-	 * @return array
+	 * @param PDO $db
+	 * @param $id
+	 * @return bool|string
 	 */
-	public function getComponents()
+	public static function deleteAll(PDO $db, $id)
 	{
-		$query = 'SELECT * FROM components WHERE cv_id=?';
-		$result = $this->db->prepare($query);
-		$result->execute([
-			$_COOKIE['CURRENT_CV'],
-		]);
-		
-		return $result->fetchAll();
+		try {
+			$query = 'DELETE FROM components WHERE cv_id=?';
+			$conn = $db->prepare($query);
+			$conn->execute([
+				(int)$id,
+			]);
+			
+			return true;
+		} catch (Exception $e) {
+			return 'Error!: ' . $e->getMessage() . '<br/>';
+		}
 	}
 	
-	/**
-	 * @return mixed
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
 	
 	/**
-	 * @param mixed $id
+	 * @param PDO $db
+	 * @param $id
+	 * @return array|string
 	 */
-	public function setId($id)
+	public static function getComponents(PDO $db, $id)
 	{
-		$this->id = $id;
-	}
-	
-	/**
-	 * @return mixed
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
-	
-	/**
-	 * @param mixed $type
-	 */
-	public function setType($type)
-	{
-		$this->type = $type;
-	}
-	
-	/**
-	 * @return mixed
-	 */
-	public function getContent()
-	{
-		return $this->content;
-	}
-	
-	/**
-	 * @param mixed $content
-	 */
-	public function setContent($content)
-	{
-		$this->content = $content;
-	}
-	
-	/**
-	 * @return mixed
-	 */
-	public function getCvId()
-	{
-		return $this->cv_id;
-	}
-	
-	/**
-	 * @param mixed $cv_id
-	 */
-	public function setCvId($cv_id)
-	{
-		$this->cv_id = $cv_id;
+		try {
+			$query = 'SELECT * FROM components WHERE cv_id=?';
+			$result = $db->prepare($query);
+			$result->execute([
+				(int)$id,
+			]);
+			
+			return $result->fetchAll();
+		} catch (Exception $e) {
+			return 'Error!: ' . $e->getMessage() . '<br/>';
+		}
 	}
 }
-
-// TODO: Write a helper function for passing data to views - 'extract($data)'

@@ -6,6 +6,9 @@ if (strpos($request, '?')) {
 	$request = substr($request, 0, strpos($request, '?'));
 }
 
+$request = str_replace('/phpcv', '', $request);
+
+
 switch ($request) {
 	case '' :
 		redirect('/');
@@ -31,12 +34,9 @@ switch ($request) {
 		break;
 	case '/logout' :
 	case '/logout/' :
-		$user->logout();
+		User::logout();
 		break;
-/**
- * FIXME: Default case always executes?
- */
-//	default :
-//		include_once 'home.php';
-//		break;
+	default :
+		redirect('/');
+		break;
 }

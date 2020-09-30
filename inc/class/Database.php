@@ -21,4 +21,16 @@ class Database
 		
 		return self::$instance;
 	}
+	
+	public static function init()
+	{
+		try {
+			self::$instance = new PDO(DB_DSN, DB_USER, DB_PASSWORD, DB_OPTIONS);
+		} catch (PDOException $e) {
+			print 'Error!: ' . $e->getMessage() . '<br/>';
+			die();
+		}
+		
+		return self::$instance;
+	}
 }

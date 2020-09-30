@@ -5,17 +5,12 @@
         
         <form method="POST" class="form-row">
             
-            <div class="form-group col-md-4">
-                <label for="first_name">First Name</label>
-                <input type="text" name="first_name" id="first_name" class="form-control" required>
+            <div class="form-group col-md-12">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" class="form-control" required>
             </div>
 
-            <div class="form-group col-md-4">
-                <label for="last_name">Last Name</label>
-                <input type="text" name="last_name" id="last_name" class="form-control" required>
-            </div>
-
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-12">
                 <label for="title">Title</label>
                 <input type="text" name="title" id="title" class="form-control" required>
             </div>
@@ -35,19 +30,14 @@
                 <input type="text" name="email" id="email" class="form-control" required>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
                 <label for="country">Country</label>
                 <input type="text" name="country" id="country" class="form-control" required>
             </div>
 
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
                 <label for="city">City</label>
                 <input type="text" name="city" id="city" class="form-control" required>
-            </div>
-            
-            <div class="form-group col-md-4">
-                <label for="zip">ZIP</label>
-                <input type="text" name="zip" id="zip" class="form-control" required>
             </div>
             
             <div class="form-group col-md-6">

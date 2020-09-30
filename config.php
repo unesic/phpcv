@@ -1,9 +1,8 @@
 <?php
 
-include_once __DIR__ . '/defines.php';
-include_once __DIR__ . '/functions.php';
+include_once 'defines.php';
+include_once 'functions.php';
 
 spl_autoload_register('class_autoload');
 
 $db = Database::create();
-$user = new User($db);

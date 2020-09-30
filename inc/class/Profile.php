@@ -4,127 +4,183 @@
 class Profile
 {
 	/**
-	 * @var PDO
+	 * @param PDO $db
+	 * @param $data
 	 */
-	
-	private $db;
-	
-	public function __construct($db)
+	public static function create(PDO $db, $data)
 	{
-		$this->db = $db;
-	}
-	
-	public function create($data)
-	{
-		$query = 'INSERT INTO profiles (
+		try {
+			$query = 'INSERT INTO profiles (
                         user_id,
                         name,
                         title,
                         date_of_birth,
                         phone_number,
                         email,
-                        address,
-                        social_networks,
-                        date_created,
-                        date_updated)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-		
-		$create = $this->db->prepare($query);
-		$create->execute([
-			$data['user_id'],
-			$data['name'],
-			$data['title'],
-			$data['date_of_birth'],
-			$data['phone_number'],
-			$data['email'],
-			$data['address'],
-			$data['social_networks'],
-			date(DATE_FORMAT),
-			date(DATE_FORMAT),
-		]);
-		
-		redirect('/', 1, 'Profile created!');
-	}
-	
-	public function create_cv($profile_id)
-	{
-		// Creates new entry in CVS table
-		$query = 'INSERT INTO cvs (profile_id) VALUES (?)';
-		$create = $this->db->prepare($query);
-		$create->execute([
-			$profile_id,
+                        country,
+                      	city,
+                        social_networks)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+			
+			$create = $db->prepare($query);
+			$create->execute([
+				$data['user_id'],
+				$data['name'],
+				$data['title'],
+				$data['date_of_birth'],
+				$data['phone_number'],
+				$data['email'],
+				$data['country'],
+				$data['city'],
+				$data['social_networks'],
 			]);
-		
-		// Updates current profile property
-		$query = 'UPDATE profiles
-						SET has_cvs = IF(has_cvs = 0, 1, 1)
-						WHERE profile_id=?';
-		$update = $this->db->prepare($query);
-		$update->execute([
-			$profile_id,
-		]);
-		
-		$query = 'SELECT id FROM cvs WHERE profile_id=? ORDER BY id DESC LIMIT 1';
-		$result = $this->db->prepare($query);
-		$result->execute([
-			$profile_id,
-		]);
-		
-		setcookie('CURRENT_CV', $result->fetchAll()[0]['id']);
-		
-		redirect('/', 1, 'CV Created successfully!');
+			
+			redirect('/', 1, 'Profile created!');
+		} catch (Exception $e) {
+			echo 'Error!: ' . $e->getMessage() . '<br/>';
+		}
 	}
 	
-	public function get($id)
+	/**
+	 * @param PDO $db
+	 * @param $data
+	 */
+	public static function update(PDO $db, $data)
 	{
-		$query = 'SELECT * FROM profiles WHERE profile_id=?';
-		$result = $this->db->prepare($query);
-		$result->execute([
-			(int)$id,
-		]);
-		
-		$result = $result->fetchAll();
-		
-		return $result[0];
-	}
-	
-	public function update($data)
-	{
-		$query = 'UPDATE profiles SET
+		try {
+			$query = 'UPDATE profiles SET
                         name=?,
                         title=?,
                         date_of_birth=?,
                         phone_number=?,
                         email=?,
-                        address=?,
+                        country=?,
+                        city=?,
                         social_networks=?,
                         date_updated=?
-                        WHERE profile_id=?';
-		
-		$update = $this->db->prepare($query);
-		$update->execute([
-			$data['name'],
-			$data['title'],
-			$data['date_of_birth'],
-			$data['phone_number'],
-			$data['email'],
-			$data['address'],
-			$data['social_networks'],
-			date(DATE_FORMAT),
-			(int)$data['pid'],
-		]);
-		
-		redirect('/p/', 1, 'Profile updated!');
+                        WHERE id=?';
+			
+			$update = $db->prepare($query);
+			$update->execute([
+				$data['name'],
+				$data['title'],
+				$data['date_of_birth'],
+				$data['phone_number'],
+				$data['email'],
+				$data['country'],
+				$data['city'],
+				$data['social_networks'],
+				date(DATE_FORMAT),
+				(int)$data['pid'],
+			]);
+			
+			redirect('/p/', 1, 'Profile updated!');
+		} catch (Exception $e) {
+			echo 'Error!: ' . $e->getMessage() . '<br/>';
+		}
 	}
 	
-	public function delete($id)
+	/**
+	 * @param PDO $db
+	 * @param $id
+	 * @return mixed|string
+	 */
+	public static function get(PDO $db, $id)
 	{
-		$query = 'DELETE FROM profiles WHERE profile_id=?';
-		$conn = $this->db->prepare($query);
-		$conn->execute([
-			(int)$id,
-		]);
-		
-		redirect('/p/', 1, 'Profile deleted!');
+		try {
+			$query = 'SELECT * FROM profiles WHERE id=?';
+			$result = $db->prepare($query);
+			$result->execute([
+				(int)$id,
+			]);
+			
+			return $result->fetchAll()[0];
+		} catch (Exception $e) {
+			return 'Error!: ' . $e->getMessage() . '<br/>';
+		}
+	}
+	
+	/**
+	 * @param PDO $db
+	 * @return array|string
+	 */
+	public static function getProfiles(PDO $db)
+	{
+		try {
+			$query = 'SELECT * FROM profiles WHERE user_id=?';
+			$get = $db->prepare($query);
+			$get->execute([
+				$_SESSION['user_id'],
+			]);
+			
+			return $get->fetchAll();
+		} catch (Exception $e) {
+			return 'Error!: ' . $e->getMessage() . '<br/>';
+		}
+	}
+	
+	/**
+	 * @param PDO $db
+	 * @param $id
+	 */
+	public static function delete(PDO $db, $id)
+	{
+		try {
+			$query = 'DELETE FROM profiles WHERE id=?';
+			$conn = $db->prepare($query);
+			$conn->execute([
+				(int)$id,
+			]);
+			
+			if (CV::delete($db, $id)) {
+				redirect('/p/', 1, 'Profile deleted!');
+			}
+		} catch (Exception $e) {
+			echo 'Error!: ' . $e->getMessage() . '<br/>';
+		}
+	}
+	
+	/**
+	 * @param PDO $db
+	 * @param $id
+	 * @return bool|mixed
+	 */
+	public static function getUserId(PDO $db, $id)
+	{
+		try {
+			$query = 'SELECT user_id FROM profiles WHERE id=? LIMIT 1';
+			$conn = $db->prepare($query);
+			$conn->execute([
+				(int)$id,
+			]);
+			
+			return $conn->fetchAll()[0]['user_id'];
+		} catch (Exception $e) {
+			echo 'Error!: ' . $e->getMessage() . '<br/>';
+			
+			return false;
+		}
+	}
+	
+	/**
+	 * @param PDO $db
+	 * @param $id
+	 * @return bool|mixed
+	 */
+	public static function hasCV(PDO $db, $id)
+	{
+		try {
+			$query = 'SELECT has_cvs FROM profiles WHERE id=? LIMIT 1';
+			$conn = $db->prepare($query);
+			$conn->execute([
+				(int)$id,
+			]);
+			
+			return $conn->fetchAll()[0]['has_cvs'];
+		} catch (Exception $e) {
+			echo 'Error!: ' . $e->getMessage() . '<br/>';
+			
+			return false;
+		}
 	}
 }
